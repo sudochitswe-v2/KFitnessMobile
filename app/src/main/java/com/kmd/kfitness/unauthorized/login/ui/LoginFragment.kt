@@ -135,7 +135,7 @@ class LoginFragment : Fragment() {
     private fun onLoginError(error: VolleyError){
         val errMsg = error.networkResponse.data.toString(Charset.defaultCharset())
        val data =  gson.fromJson(errMsg,ApiError::class.java)
-       _messageHelper.showPositiveDialog("Error",data.error);
+       _messageHelper.showPositiveDialog("Error",data.error)
     }
 
     private fun validateForm() {
