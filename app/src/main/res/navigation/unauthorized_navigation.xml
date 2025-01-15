@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.kmd.kfitness.unauthorized.register.RegisterFragment"
+        android:name="com.kmd.kfitness.unauthorized.register.ui.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action

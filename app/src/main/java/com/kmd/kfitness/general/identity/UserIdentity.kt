@@ -1,7 +1,6 @@
 package com.kmd.kfitness.general.identity
 
-import com.kmd.kfitness.unauthorized.login.data.model.LoggedInUser
-import kotlin.math.log
+import com.kmd.kfitness.unauthorized.login.data.LoggedInUserModel
 
 //object UserIdentity {
 //    private var id:Int? = null;
@@ -37,7 +36,7 @@ class UserIdentity private constructor() {
 
 
     // Initialize method
-    fun init(loggedInUser: LoggedInUser) {
+    fun init(loggedInUser: LoggedInUserModel) {
         id = loggedInUser.claim.id
         name = loggedInUser.claim.name
         email = loggedInUser.claim.email

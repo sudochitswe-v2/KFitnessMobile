@@ -1,7 +1,6 @@
 package com.kmd.kfitness.unauthorized.login.ui
 
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.text.Editable
@@ -25,8 +24,8 @@ import com.kmd.kfitness.general.error.ApiError
 import com.kmd.kfitness.general.identity.UserIdentity
 import com.kmd.kfitness.general.helper.MessageHelper
 import com.kmd.kfitness.general.helper.SharedPrefHelper
-import com.kmd.kfitness.unauthorized.login.data.model.LoggedInUser
-import com.kmd.kfitness.unauthorized.login.data.model.LoginRequest
+import com.kmd.kfitness.unauthorized.login.data.LoggedInUserModel
+import com.kmd.kfitness.unauthorized.login.data.LoginRequestModel
 import java.nio.charset.Charset
 
 
@@ -86,13 +85,13 @@ class LoginFragment : Fragment() {
         }
     }
     private fun login() {
-        val loginRequest = LoginRequest(
+        val loginRequest = LoginRequestModel(
             binding.username.text.toString(),
             binding.password.text.toString()
         )
         val request = object: StringRequest(
             Method.POST,
-            KFitnessUrl.login,
+            KFitnessUrl.LOGIN,
             {
                 response -> onLoginOk(response)
             },
@@ -108,7 +107,7 @@ class LoginFragment : Fragment() {
 
     }
     private fun checkUserAuthAndAutoLogin(){
-      val userData = _sharedPref.getData(ConstantKey.loggedInUser,"")
+      val userData: String = _sharedPref.getData(ConstantKey.loggedInUser,"")
         if(userData!= ""){
             setIdentity(userData)
             replaceWithMainActivity()
@@ -129,7 +128,7 @@ class LoginFragment : Fragment() {
         _sharedPref.saveData(ConstantKey.loggedInUser,response)
     }
     private fun setIdentity(response: String){
-        val claim = gson.fromJson(response,LoggedInUser::class.java)
+        val claim = gson.fromJson(response, LoggedInUserModel::class.java)
         UserIdentity.instance.init(claim)
     }
 
