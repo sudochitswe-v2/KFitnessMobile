@@ -16,5 +16,9 @@
             android:id="@+id/nav_workouts"
             android:icon="@drawable/ico_dot_list"
             android:title="@string/menu_workout" />
+        <item
+            android:id="@+id/nav_goals"
+            android:icon="@drawable/ico_dot_list"
+            android:title="@string/menu_goal" />
     </group>
 </menu>

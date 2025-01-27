@@ -22,4 +22,18 @@
         android:name="com.kmd.kfitness.main.workouts.SlideshowFragment"
         android:label="@string/menu_workout"
         tools:layout="@layout/fragment_workouts" />
+    <fragment
+        android:id="@+id/nav_goals"
+        android:name="com.kmd.kfitness.main.goals.ui.GoalsFragment"
+        android:label="@string/menu_goal"
+        tools:layout="@layout/fragment_goals_list" >
+        <action
+            android:id="@+id/action_nav_goals_to_addGoalFragment"
+            app:destination="@id/addGoalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addGoalFragment"
+        android:name="com.kmd.kfitness.main.goals.ui.AddGoalFragment"
+        android:label="@string/menu_add_goal"
+        tools:layout="@layout/fragment_add_goal" />
 </navigation>

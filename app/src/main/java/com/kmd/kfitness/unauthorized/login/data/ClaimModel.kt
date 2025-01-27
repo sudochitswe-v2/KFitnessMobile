@@ -11,8 +11,4 @@ data class ClaimModel(
     val email: String,
     @SerializedName("password")
     val password: String,
-    @SerializedName("height")
-    val height: String,
-    @SerializedName("weight")
-    val weight: String
 )

@@ -80,56 +80,16 @@
             android:selectAllOnFocus="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Height and Weight Input in a Single Row -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:layout_marginTop="12dp"
-        android:weightSum="2">
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="8dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/height_text_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_height_in_cm"
-                android:inputType="number"
-                android:selectAllOnFocus="true" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/weight_text_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_weight_in_lb"
-                android:inputType="number"
-                android:selectAllOnFocus="true" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_register"
+        style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="24dp"
-        android:text="@string/action_register"
-        style="@style/Widget.Material3.Button.ElevatedButton"
-        android:layout_gravity="center_horizontal" />
-    <Button
+        android:enabled="false"
+        android:text="@string/action_register" />
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_back_to_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

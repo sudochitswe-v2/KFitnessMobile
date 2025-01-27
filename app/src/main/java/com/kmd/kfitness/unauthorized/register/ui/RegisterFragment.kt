@@ -35,8 +35,6 @@ class RegisterFragment : Fragment() {
     private lateinit var emailEditText : TextInputEditText
     private lateinit var passwordEditText : TextInputEditText
     private lateinit var confirmPasswordTextEdit : TextInputEditText
-    private lateinit var heightTextEdit : TextInputEditText
-    private lateinit var weightTextEdit : TextInputEditText
     private lateinit var registerButton : Button
 
 
@@ -53,8 +51,6 @@ class RegisterFragment : Fragment() {
         emailEditText = binding.emailTextInput
         passwordEditText = binding.passwordTextInput
         confirmPasswordTextEdit = binding.confirmPasswordTextInput
-        heightTextEdit = binding.heightTextInput
-        weightTextEdit = binding.weightTextInput
         registerButton = binding.btnRegister
         return binding.root
     }
@@ -119,9 +115,7 @@ class RegisterFragment : Fragment() {
                 fullNameEditText.error == null &&
                 emailEditText.error == null &&
                 passwordEditText.error == null &&
-                confirmPasswordTextEdit.error == null &&
-                heightTextEdit.error == null &&
-                weightTextEdit.error == null
+                confirmPasswordTextEdit.error == null
                 registerButton.isEnabled = isEnabled
     }
     private fun register(){
@@ -130,8 +124,6 @@ class RegisterFragment : Fragment() {
                 fullNameEditText.text.toString(),
                 emailEditText.text.toString(),
                 passwordEditText.text.toString(),
-                heightTextEdit.text.toString().toDouble(),
-                weightTextEdit.text.toString().toDouble()
             )
             val request = object: StringRequest(
                 Method.POST,

@@ -1,5 +1,6 @@
 package com.kmd.kfitness.unauthorized.login.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import android.os.Bundle
@@ -106,11 +107,17 @@ class LoginFragment : Fragment() {
         _requestQueue.add(request)
 
     }
+    @SuppressLint("SuspiciousIndentation")
     private fun checkUserAuthAndAutoLogin(){
       val userData: String = _sharedPref.getData(ConstantKey.loggedInUser,"")
         if(userData!= ""){
-            setIdentity(userData)
-            replaceWithMainActivity()
+           try{
+               setIdentity(userData)
+               replaceWithMainActivity()
+           }catch (e:Exception){
+               _sharedPref.removeData(ConstantKey.loggedInUser)
+               _messageHelper.showShortToast(e.message.toString());
+           }
         }
     }
     private fun replaceWithMainActivity(){
