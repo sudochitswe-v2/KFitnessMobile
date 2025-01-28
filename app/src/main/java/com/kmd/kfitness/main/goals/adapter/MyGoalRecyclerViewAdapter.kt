@@ -10,7 +10,9 @@ import com.kmd.kfitness.main.goals.data.GoalModel
 
 class MyGoalRecyclerViewAdapter(
     private val values: List<GoalModel>,
-    private val onEditClick: (GoalModel) -> Unit
+    private val onEditClick: (GoalModel) -> Unit,
+    private val onDetailClick : (Int)->Unit,
+    private val onDeleteClick : (Int)->Unit
 ) : RecyclerView.Adapter<MyGoalRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,6 +33,13 @@ class MyGoalRecyclerViewAdapter(
         holder.descriptionTextView.text = item.description
         holder.statusTextView.text = item.status
         holder.targetValueTextView.text = item.target.toString()
+
+        holder.deleteButton.setOnClickListener{
+            onDeleteClick(item.id)
+        }
+        holder.detailsButton.setOnClickListener{
+            onDetailClick(item.id)
+        }
         holder.editButton.setOnClickListener {
             onEditClick(item)
         }
@@ -43,6 +52,8 @@ class MyGoalRecyclerViewAdapter(
         val statusTextView = binding.statusText
         val targetValueTextView = binding.targetText
         val editButton = binding.editButton
+        val detailsButton = binding.viewDetailsButton
+        val deleteButton = binding.deleteButton
     }
 
 }

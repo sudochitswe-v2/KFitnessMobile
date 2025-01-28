@@ -76,6 +76,16 @@
                 android:gravity="end"
                 android:paddingEnd="8dp">
 
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.Material3.Button.TonalButton.Icon"
+                    android:id="@+id/delete_button"
+                    app:icon="@android:drawable/ic_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delete"
+                    android:layout_marginEnd="8dp"
+                    app:cornerRadius="16dp" />
+
                 <!-- View Details Button -->
                 <com.google.android.material.button.MaterialButton
                     style="@style/Widget.Material3.Button.OutlinedButton"
@@ -88,7 +98,8 @@
 
                 <!-- Edit Button -->
                 <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                    app:icon="@android:drawable/ic_menu_edit"
                     android:id="@+id/edit_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

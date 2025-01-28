@@ -13,6 +13,7 @@
     <string name="menu_workout">Workouts</string>
     <string name="menu_goal">Goals</string>
     <string name="menu_add_goal">Add/Edit Goal</string>
+    <string name="menu_goal_details">Goal Details</string>
     <string name="menu_activity">Activities</string>
     <!-- Strings related to login or register -->
     <string name="prompt_full_name">Full Name</string>

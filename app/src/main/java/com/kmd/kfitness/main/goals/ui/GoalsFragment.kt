@@ -61,6 +61,27 @@ class GoalsFragment : Fragment() {
     private fun createNew() {
         findNavController().navigate(R.id.action_nav_goals_to_addGoalFragment)
     }
+    private fun edit(goalModel:GoalModel){
+        val bundle = Bundle().apply {
+            putSerializable(
+                "goalModel",
+                goalModel
+            ) // `item` is the GoalModel object
+        }
+        findNavController().navigate(
+            R.id.action_nav_goals_to_addGoalFragment,
+            bundle
+        )
+    }
+    private fun viewDetails(id : Int){
+        val bundle = Bundle().apply {
+            putSerializable(
+                "id",
+                id
+            ) // `item` is the GoalModel object
+        }
+        findNavController().navigate(R.id.action_nav_goals_to_progressListFragment,bundle)
+    }
     private fun fetchGoals() {
         val url = "${KFitnessUrl.GOALS}?user_id=${UserIdentity.instance.id}"
 
@@ -73,23 +94,19 @@ class GoalsFragment : Fragment() {
                     val goals = gson.fromJson<List<GoalModel>>(response, goalListType)
 
                     // Update the adapter with the new data
-                    _listAdapter = MyGoalRecyclerViewAdapter(goals) { goalModel ->
-                        val bundle = Bundle().apply {
-                            putSerializable(
-                                "goalModel",
-                                goalModel
-                            ) // `item` is the GoalModel object
+                    _listAdapter = MyGoalRecyclerViewAdapter(goals,
+                    {
+                        goalModel -> edit(goalModel)
+                    }, {
+                        id -> viewDetails(id)
+                    },{
+                        id-> delete(id)
                         }
-                        findNavController().navigate(
-                            R.id.action_nav_goals_to_addGoalFragment,
-                            bundle
-                        )
-
-                    }
+                    )
                     binding.goalList.adapter = _listAdapter
 
                     // Notify the adapter that the data has changed
-                    //_listAdapter.notifyDataSetChanged()
+                    _listAdapter.notifyDataSetChanged()
                 } catch (e: Exception) {
                     e.printStackTrace()
                     Log.e("UserFragment", "Error parsing JSON: ${e.message}")
@@ -103,6 +120,20 @@ class GoalsFragment : Fragment() {
 
         // Add the request to the RequestQueue
         _requestQueue.add(stringRequest)
+    }
+    private fun delete(id : Int){
+        val url = "${KFitnessUrl.GOALS}?id=$id"
+
+        val deleteRequest = StringRequest(
+            Request.Method.DELETE, url,
+            { _ -> fetchGoals()
+            },
+            { error ->
+                _messageHelper.showPositiveDialog("Error",error.toString())
+                Log.e("GoalsFragment", "Volley error: ${error.message}")
+            }
+        )
+        _requestQueue.add(deleteRequest)
     }
 
 }

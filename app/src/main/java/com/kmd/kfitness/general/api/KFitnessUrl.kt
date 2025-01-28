@@ -5,4 +5,5 @@ package com.kmd.kfitness.general.api
      const val LOGIN = "$BASE_URL/auth/login.php"
      const val REGISTER = "$BASE_URL/auth/register.php"
      const val GOALS = "$BASE_URL/goals/index.php"
+     const val PROGRESSES = "$BASE_URL/goals/progresses/index.php"
 }
