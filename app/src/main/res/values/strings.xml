@@ -28,9 +28,13 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="prompt_confirm_password">Confirm Password</string>
-    <string name="prompt_date_of_birth">Date of Birth</string>
-    <string name="prompt_height_in_cm">Height (cm) </string>
-    <string name="prompt_weight_in_lb">Weight (lb)</string>
+    <string name="prompt_weight_in_kg">Weight (kg)</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="goalStatuses">
+        <item>In Progress</item>
+        <item>Completed</item>
+    </string-array>
+
 </resources>

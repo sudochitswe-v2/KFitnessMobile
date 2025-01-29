@@ -7,41 +7,52 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.kmd.kfitness.main.home.HomeFragment"
+        android:name="com.kmd.kfitness.main.home.ui.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
-
-    <fragment
-        android:id="@+id/nav_activities"
-        android:name="com.kmd.kfitness.main.activities.ActivitiesFragment"
-        android:label="@string/menu_activity"
-        tools:layout="@layout/fragment_activities" />
-
     <fragment
         android:id="@+id/nav_workouts"
-        android:name="com.kmd.kfitness.main.workouts.SlideshowFragment"
+        android:name="com.kmd.kfitness.main.workouts.ui.WorkoutsFragment"
         android:label="@string/menu_workout"
-        tools:layout="@layout/fragment_workouts" />
+        tools:layout="@layout/fragment_workouts" >
+        <action
+            android:id="@+id/action_nav_workouts_to_nav_edit_workout"
+            app:destination="@id/nav_edit_workout" />
+    </fragment>
     <fragment
         android:id="@+id/nav_goals"
         android:name="com.kmd.kfitness.main.goals.ui.GoalsFragment"
         android:label="@string/menu_goal"
         tools:layout="@layout/fragment_goals_list" >
         <action
-            android:id="@+id/action_nav_goals_to_addGoalFragment"
-            app:destination="@id/addGoalFragment" />
+            android:id="@+id/action_nav_goals_to_nav_edit_goal"
+            app:destination="@id/nav_edit_goal" />
         <action
-            android:id="@+id/action_nav_goals_to_progressListFragment"
-            app:destination="@id/progressListFragment" />
+            android:id="@+id/action_nav_goals_to_nav_goal_details"
+            app:destination="@id/nav_goal_details" />
     </fragment>
     <fragment
-        android:id="@+id/addGoalFragment"
+        android:id="@+id/nav_edit_goal"
         android:name="com.kmd.kfitness.main.goals.ui.EditableGoalFragment"
         tools:layout="@layout/fragment_editable_goal" />
     <fragment
-        android:id="@+id/progressListFragment"
-        android:name="com.kmd.kfitness.main.goals.ui.ProgressListFragment"
+        android:id="@+id/nav_goal_details"
+        android:name="com.kmd.kfitness.main.goals.ui.GoalDetailsFragment"
         android:label="@string/menu_goal_details"
-        tools:layout="@layout/fragment_progress_list"
-        />
+        tools:layout="@layout/fragment_goal_details"
+        >
+        <action
+            android:id="@+id/nav_goal_details_to_nav_edit_progress"
+            app:destination="@id/nav_edit_progress" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_edit_progress"
+        android:name="com.kmd.kfitness.main.goals.ui.EditableProgressFragment"
+        android:label="EditableProgressFragment"
+        tools:layout="@layout/fragment_editable_progress"/>
+    <fragment
+        android:id="@+id/nav_edit_workout"
+        tools:layout="@layout/fragment_editable_workout"
+        android:name="com.kmd.kfitness.main.workouts.ui.EditableWorkoutFragment"
+        android:label="EditableWorkoutFragment" />
 </navigation>

@@ -9,10 +9,6 @@
             android:icon="@drawable/ico_home"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_activities"
-            android:icon="@drawable/ico_dot_list"
-            android:title="@string/menu_activity" />
-        <item
             android:id="@+id/nav_workouts"
             android:icon="@drawable/ico_dot_list"
             android:title="@string/menu_workout" />

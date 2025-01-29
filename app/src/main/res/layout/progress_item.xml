@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="10dp"
     app:cardElevation="3dp"
     android:layout_marginBottom="8dp"
     android:background="#FFF7F7"
@@ -21,6 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingHorizontal="10dp"
             android:text="Date:"
             android:textSize="16sp"/>
 
@@ -33,12 +33,25 @@
             android:textColor="#000000" />
 
         <com.google.android.material.button.MaterialButton
-            style="@style/Widget.Material3.Button.ElevatedButton"
+            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+            app:icon="@android:drawable/ic_menu_edit"
             android:id="@+id/edit_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="edit"
+            android:text="Edit"
             android:textSize="14sp"
             android:layout_marginStart="12dp" />
+
+        <!-- Delete Button -->
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.Material3.Button.TonalButton.Icon"
+            app:icon="@android:drawable/ic_delete"
+            android:id="@+id/delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:textSize="14sp"
+            android:layout_marginStart="8dp"
+            />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -34,7 +34,6 @@ class GoalsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private val gson = Gson()
-
     private lateinit var _requestQueue: RequestQueue
     private lateinit var _messageHelper: MessageHelper
     private lateinit var _listAdapter: MyGoalRecyclerViewAdapter
@@ -59,7 +58,7 @@ class GoalsFragment : Fragment() {
         return binding.root;
     }
     private fun createNew() {
-        findNavController().navigate(R.id.action_nav_goals_to_addGoalFragment)
+        findNavController().navigate(R.id.action_nav_goals_to_nav_edit_goal)
     }
     private fun edit(goalModel:GoalModel){
         val bundle = Bundle().apply {
@@ -69,18 +68,15 @@ class GoalsFragment : Fragment() {
             ) // `item` is the GoalModel object
         }
         findNavController().navigate(
-            R.id.action_nav_goals_to_addGoalFragment,
+            R.id.action_nav_goals_to_nav_edit_goal,
             bundle
         )
     }
     private fun viewDetails(id : Int){
         val bundle = Bundle().apply {
-            putSerializable(
-                "id",
-                id
-            ) // `item` is the GoalModel object
+            putInt("id",id)
         }
-        findNavController().navigate(R.id.action_nav_goals_to_progressListFragment,bundle)
+        findNavController().navigate(R.id.action_nav_goals_to_nav_goal_details,bundle)
     }
     private fun fetchGoals() {
         val url = "${KFitnessUrl.GOALS}?user_id=${UserIdentity.instance.id}"
@@ -104,17 +100,14 @@ class GoalsFragment : Fragment() {
                         }
                     )
                     binding.goalList.adapter = _listAdapter
-
-                    // Notify the adapter that the data has changed
-                    _listAdapter.notifyDataSetChanged()
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    Log.e("UserFragment", "Error parsing JSON: ${e.message}")
+                    Log.e("GoalsFragment", "Error parsing JSON: ${e.message}")
                 }
             },
             { error ->
                 _messageHelper.showPositiveDialog("Error",error.toString())
-                Log.e("UserFragment", "Volley error: ${error.message}")
+                Log.e("GoalsFragment", "Volley error: ${error.message}")
             }
         )
 
