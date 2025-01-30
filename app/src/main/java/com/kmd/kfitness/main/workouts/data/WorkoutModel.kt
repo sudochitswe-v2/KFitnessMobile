@@ -4,55 +4,32 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.util.Date
 
-data class WorkoutModel(
-    @SerializedName("id")
-    val id: Int,
-
-    @SerializedName("user_id")
-    val userId: Int,
-
-    @SerializedName("activity_id")
-    val activityId: Int,
-
-    @SerializedName("date")
-    val date: Date,
-
-    @SerializedName("duration")
-    val duration: Int,
-
-    @SerializedName("distance")
-    val distance: Float,
-
-    @SerializedName("weight")
-    val weight: Float?,
-
-    @SerializedName("repetitions")
-    val repetitions: Int?,
-
-    @SerializedName("sets")
-    val sets: Int?,
-
-    @SerializedName("status")
-    val status: String,
-
-    @SerializedName("start_latitude")
-    val startLatitude: Double?,
-
-    @SerializedName("start_longitude")
-    val startLongitude: Double?,
-
-    @SerializedName("end_latitude")
-    val endLatitude: Double?,
-
-    @SerializedName("end_longitude")
-    val endLongitude: Double?,
+ class WorkoutModel(
+    id: Int,
+    userId: Int,
+    activityId: Int,
+    date: Date,
+    duration: Int,
+    distance: Float?,
+    weight: Float?,
+    repetitions: Int?,
+    sets: Int?,
+    status: String,
+    startLatitude: String?,
+    startLongitude: String?,
+    endLatitude: String?,
+    endLongitude: String?,
 
     @SerializedName("activity")
     val activity: String,
-    @SerializedName("calories_per_minute")
-    val caloriesPerMinute : Float
 
-) : Serializable{
+    @SerializedName("calories_per_minute")
+    val caloriesPerMinute: Float
+
+) : BaseWorkoutModel(
+    id, userId, activityId, date, duration, distance, weight, repetitions, sets, status,
+    startLatitude, startLongitude, endLatitude, endLongitude
+) {
     fun toEditableModel() : EditableWorkoutModel{
         return EditableWorkoutModel(
             id,

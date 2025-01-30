@@ -1,6 +1,10 @@
 package com.kmd.kfitness.main.workouts.ui
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,12 +12,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -48,6 +56,9 @@ class EditableWorkoutFragment : Fragment() {
     private val gson = GsonBuilder()
         .serializeNulls()
         .setDateFormat(GeneralHelper.K_DATE_FORMAT).create()
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     private lateinit var goalStatus: Array<String>
     private lateinit var requestQueue: RequestQueue
     private lateinit var messageHelper: MessageHelper
@@ -57,6 +68,8 @@ class EditableWorkoutFragment : Fragment() {
     private var workoutModel :EditableWorkoutModel? = null
     private var selectedActivity: ActivityModel? = null
     private val calendar = Calendar.getInstance()
+
+    private var isStartLocationRequest = true  // Default to start location
 
     private fun isEditMode() :Boolean {
         return workoutModel != null
@@ -77,9 +90,20 @@ class EditableWorkoutFragment : Fragment() {
         goalStatus = resources.getStringArray(R.array.goalStatuses)
         val data = arguments?.getString("workoutModel")
         workoutModel =  gson.fromJson(data,EditableWorkoutModel::class.java)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         setAppBarTitle()
     }
-
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LOCATION_PERMISSION_REQUEST) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getCurrentLocation(isStartLocationRequest)
+            } else {
+                messageHelper
+                    .showPositiveDialog("Permission denied","Permission is required to use this feature.")
+            }
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -89,9 +113,18 @@ class EditableWorkoutFragment : Fragment() {
         binding.activityAutoText.setOnItemClickListener { _, _, position, _ ->
             selectedActivity = activities[position]
         }
-
-        binding.startButton.setOnClickListener {  }
-        binding.finishButton.setOnClickListener {  }
+        if(isEditMode()){
+            binding.startButton.isEnabled =true
+            binding.finishButton.isEnabled =true
+            binding.startButton.setOnClickListener {
+                isStartLocationRequest = true
+                getCurrentLocation(isStartLocationRequest)
+            }
+            binding.finishButton.setOnClickListener {
+                isStartLocationRequest =false
+                getCurrentLocation(isStartLocationRequest)
+            }
+        }
         binding.dateInputText.setOnClickListener{ showDatePicker(binding.dateInputText) }
         binding.statusAutoTextView.setAdapter(ArrayAdapter(requireContext(),R.layout.dropdown_item,goalStatus))
         fetchActivities().apply {
@@ -100,6 +133,33 @@ class EditableWorkoutFragment : Fragment() {
             }
         }
         return binding.root
+    }
+    @SuppressLint("SetTextI18n")
+    private fun getCurrentLocation(isStart : Boolean) {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST)
+            return
+        }
+
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            if (location != null) {
+                val latitude = location.latitude
+                val longitude = location.longitude
+
+                if(isStart){
+                    binding.startLatitudeTextView.text = latitude.toString()
+                    binding.startLongitudeTextView.text = longitude.toString()
+                }else{
+                    binding.endLatitudeTextView.text = latitude.toString()
+                    binding.endLongitudeTextView.text = latitude.toString()
+                }
+            } else {
+                messageHelper.showPositiveDialog("Failed to retrieve location","")
+            }
+        }.addOnFailureListener {
+            messageHelper.showPositiveDialog("Error getting location",it.message)
+        }
     }
     private fun showDatePicker(textInput: TextInputEditText) {
         val datePicker = DatePickerDialog(
@@ -125,6 +185,10 @@ class EditableWorkoutFragment : Fragment() {
         if(index != -1){
             binding.statusAutoTextView.setText(goalStatus[index],false)
         }
+        binding.startLatitudeTextView.text = workoutModel.startLatitude?: LAT
+        binding.startLongitudeTextView.text = workoutModel.startLatitude?: LONG
+        binding.endLatitudeTextView.text = workoutModel.endLatitude?: LAT
+        binding.endLongitudeTextView.text = workoutModel.endLongitude?: LONG
 
     }
     private fun collectFormData() : EditableWorkoutModel {
@@ -139,10 +203,10 @@ class EditableWorkoutFragment : Fragment() {
             binding.repsTextInput.text.toString().toIntOrNull(),
             binding.setsTextInput.text.toString().toIntOrNull(),
             binding.statusAutoTextView.text.toString(),
-            null,
-            null,
-            null,
-            null,
+            binding.startLatitudeTextView.text.toString().replace(LAT,""),
+            binding.startLongitudeTextView.text.toString().replace(LONG,""),
+            binding.endLatitudeTextView.text.toString().replace(LAT,""),
+            binding.endLongitudeTextView.text.toString().replace(LONG,""),
         )
     }
     private fun saveChanges(){
@@ -214,5 +278,10 @@ class EditableWorkoutFragment : Fragment() {
 
         // Add the request to the RequestQueue
         requestQueue.add(stringRequest)
+    }
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST = 1001
+        private const val LAT = "Latitude: -"
+        private const val LONG = "Longitude: -"
     }
 }
